@@ -7,6 +7,23 @@ from pykml.factory import KML_ElementMaker as KML
 from pykml.factory import ATOM_ElementMaker as ATOM
 from pykml.factory import GX_ElementMaker as GX
 
+
+def compare_etree(tree1, tree2):
+    """Compares two ElementTree trees."""
+    if tree1.tag != tree2.tag:
+        return False
+    # Compare the namespace maps.
+    if tree1.nsmap != tree2.nsmap:
+        return False
+    # Compare the number of children.
+    if tree1.countchildren() != tree1.countchildren():
+        return False
+    # Compare the children.
+    for child1, child2 in zip(tree1.getchildren(), tree2.getchildren()):
+        if not compare_etree(child1, child2):
+            return False
+    return True
+
 class KmlFactoryTestCase(unittest.TestCase):
     
     def test_get_factory_object_name(self):
@@ -473,9 +490,9 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         doc2 = parse(temp_kml_file, schema=schema)
         # test that the root element is as expected
         self.assertEqual(doc2.docinfo.root_name, 'kml')
-        # test that the original and generated documents are equivalent
-        self.assertEqual(etree.tostring(doc), etree.tostring(doc2))
 
+        # test that the original and generated documents are equivalent
+        self.assertTrue(compare_etree(doc.getroot(), doc2.getroot()))
 
 if __name__ == '__main__':
     unittest.main()
