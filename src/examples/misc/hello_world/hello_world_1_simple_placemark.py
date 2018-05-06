@@ -11,5 +11,5 @@ doc = KML.kml(
         ),
     ),
 )
-print etree.tostring(etree.ElementTree(doc),pretty_print=True)
+print(etree.tostring(etree.ElementTree(doc),pretty_print=True))
 

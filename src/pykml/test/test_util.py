@@ -20,11 +20,11 @@ class KmlUtilTestCase(unittest.TestCase):
             doc = parse(f, schema=Schema('kml22gx.xsd'))
         summary = count_elements(doc)
         
-        self.assertTrue(summary.has_key('http://www.opengis.net/kml/2.2'))
+        self.assertTrue('http://www.opengis.net/kml/2.2' in summary)
         self.assertEqual(4,
             summary['http://www.opengis.net/kml/2.2']['Placemark']
         )
-        self.assertTrue(summary.has_key('http://www.google.com/kml/ext/2.2'))
+        self.assertTrue('http://www.google.com/kml/ext/2.2' in summary)
         self.assertEqual(5,
             summary['http://www.google.com/kml/ext/2.2']['FlyTo']
         )

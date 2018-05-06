@@ -194,7 +194,7 @@ for feature in feature_list:
 # check that the KML document is valid using the Google Extension XML Schema
 assert(Schema("kml22gx.xsd").validate(tour_doc))
 
-print etree.tostring(tour_doc, pretty_print=True)
+print(etree.tostring(tour_doc, pretty_print=True))
 
 # output a KML file (named based on the Python script)
 outfile = file(__file__.rstrip('.py')+'.kml','w')

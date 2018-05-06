@@ -185,6 +185,6 @@ for i in data:
             )
         )
 
-print etree.tostring(doc, pretty_print=True)
+print(etree.tostring(doc, pretty_print=True))
 
 

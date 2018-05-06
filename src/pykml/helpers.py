@@ -34,7 +34,7 @@ def set_max_decimal_places(doc, max_decimals):
         values[index_no] = str(round(float(values[index_no]), decimal_places))
         return separator.join(values)
     
-    if max_decimals.has_key('longitude'):
+    if 'longitude' in max_decimals:
         data_type = 'longitude'
         index_no = 0 # longitude is in the first position
         # modify <longitude>
@@ -66,7 +66,7 @@ def set_max_decimal_places(doc, max_decimals):
                 )
             )
     
-    if max_decimals.has_key('latitude'):
+    if 'latitude' in max_decimals:
         data_type = 'latitude'
         index_no = 1 # latitude is in the second position
         # modify <latitude> elements
@@ -98,7 +98,7 @@ def set_max_decimal_places(doc, max_decimals):
                 )
             )
 
-    if max_decimals.has_key('altitude'):
+    if 'altitude' in max_decimals:
         data_type = 'altitude'
         index_no = 2 # altitude is in the third position
         # modify <altitude> elements
@@ -130,15 +130,15 @@ def set_max_decimal_places(doc, max_decimals):
                 )
             )
     
-    if max_decimals.has_key('heading'):
+    if 'heading' in max_decimals:
         for el in doc.findall(".//{http://www.opengis.net/kml/2.2}heading"):
             new_val = round(float(el.text), max_decimals['heading'])
             el.getparent().heading = K.heading(new_val)
-    if max_decimals.has_key('tilt'):
+    if 'tilt' in max_decimals:
         for el in doc.findall(".//{http://www.opengis.net/kml/2.2}tilt"):
             new_val = round(float(el.text), max_decimals['tilt'])
             el.getparent().tilt = K.tilt(new_val)
-    if max_decimals.has_key('range'):
+    if 'range' in max_decimals:
         for el in doc.findall(".//{http://www.opengis.net/kml/2.2}range"):
             new_val = round(float(el.text), max_decimals['range'])
             el.getparent().range = K.range(new_val)

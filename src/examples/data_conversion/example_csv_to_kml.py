@@ -5,7 +5,10 @@ References:
 
 '''
 import csv
-import urllib2
+try:
+    from urllib.request import urlopen
+except:
+    from urllib2 import urlopen
 from datetime import datetime
 from lxml import etree
 from pykml.factory import KML_ElementMaker as KML
@@ -13,7 +16,7 @@ from pykml.factory import KML_ElementMaker as KML
 def makeExtendedDataElements(datadict):
     '''Converts a dictionary to ExtendedData/Data elements'''
     edata = KML.ExtendedData()
-    for key, value in datadict.iteritems():
+    for key, value in datadict.items():
         edata.append(KML.Data(KML.value(value), name=key + "_"))
     return edata
 
@@ -64,7 +67,7 @@ doc.append(KML.Folder())
 
 # read in a csv file, and create a placemark for each record
 url="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M2.5.txt"
-fileobject = urllib2.urlopen(url)
+fileobject = urlopen(url)
 for row in csv.DictReader(fileobject):
     timestamp = datetime.strptime(row["Datetime"], "%A, %B %d, %Y %H:%M:%S %Z")
     pm = KML.Placemark(
@@ -89,4 +92,4 @@ from pykml.parser import Schema
 schema_gx = Schema("kml22gx.xsd")
 schema_gx.assertValid(doc)
 
-print etree.tostring(doc, pretty_print=True)
+print(etree.tostring(doc, pretty_print=True))

@@ -96,7 +96,7 @@ for t in drange(0,15,tstep):
     
 
 assert Schema('kml22gx.xsd').validate(tour_doc)
-print etree.tostring(tour_doc, pretty_print=True)
+print(etree.tostring(tour_doc, pretty_print=True))
 
 # output a KML file (named based on the Python script)
 outfile = file(__file__.rstrip('.py')+'.kml','w')

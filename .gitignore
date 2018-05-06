@@ -1,3 +1,5 @@
 *.pyc
 *.gz
 src/pykml.egg-info/*
+build/*
+dist*

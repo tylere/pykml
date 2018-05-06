@@ -71,7 +71,7 @@ doc = KML.kml(
   )
 )
 
-print etree.tostring(doc, pretty_print=True)
+print(etree.tostring(doc, pretty_print=True))
 
 # output a KML file (named based on the Python script)
 outfile = file(__file__.rstrip('.py')+'.kml','w')

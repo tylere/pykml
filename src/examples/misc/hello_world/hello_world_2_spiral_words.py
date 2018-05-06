@@ -24,4 +24,4 @@ for i in range(0,360*2,10):
         )
     )
 
-print etree.tostring(etree.ElementTree(kmlobj),pretty_print=True)
+print(etree.tostring(etree.ElementTree(kmlobj),pretty_print=True))

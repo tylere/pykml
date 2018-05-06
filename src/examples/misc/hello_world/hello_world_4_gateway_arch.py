@@ -40,4 +40,4 @@ for i in range(0,len(text)):
             )
         )
 
-print etree.tostring(etree.ElementTree(kmlobj),pretty_print=True)
+print(etree.tostring(etree.ElementTree(kmlobj),pretty_print=True))

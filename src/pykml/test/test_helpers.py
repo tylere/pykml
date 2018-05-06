@@ -86,30 +86,30 @@ class KmlHelpersTestCase(unittest.TestCase):
         )
         
         longitude_list = doc.findall(".//{http://www.opengis.net/kml/2.2}longitude")
-        self.assertAlmostEquals(longitude_list[0], -105.638133)
+        self.assertAlmostEqual(longitude_list[0], -105.638133)
         
         latitude_list = doc.findall(".//{http://www.opengis.net/kml/2.2}latitude")
-        self.assertAlmostEquals(latitude_list[0], 40.25542)
+        self.assertAlmostEqual(latitude_list[0], 40.25542)
         
         altitude_list = doc.findall(".//{http://www.opengis.net/kml/2.2}altitude")
-        self.assertAlmostEquals(altitude_list[0], 0.12)
+        self.assertAlmostEqual(altitude_list[0], 0.12)
         
         heading_list = doc.findall(".//{http://www.opengis.net/kml/2.2}heading")
-        self.assertAlmostEquals(heading_list[0], -75.3)
+        self.assertAlmostEqual(heading_list[0], -75.3)
         
         tilt_list = doc.findall(".//{http://www.opengis.net/kml/2.2}tilt")
-        self.assertAlmostEquals(tilt_list[0], 23.0)
+        self.assertAlmostEqual(tilt_list[0], 23.0)
         
         # Note that the range value was not changed
         range_list = doc.findall(".//{http://www.opengis.net/kml/2.2}range")
-        self.assertAlmostEquals(range_list[0], 234.1234567890)
+        self.assertAlmostEqual(range_list[0], 234.1234567890)
         
         coords_list = doc.findall(".//{http://www.opengis.net/kml/2.2}coordinates")
-        self.assertEquals(
+        self.assertEqual(
             coords_list[0],
             "-105.638133,40.25542,3826.12"
         )
-        self.assertEquals(
+        self.assertEqual(
             coords_list[1], 
             '-105.64009,40.25778,0.0 '
             '-105.639708,40.25681,0.0 '
@@ -117,7 +117,7 @@ class KmlHelpersTestCase(unittest.TestCase):
             '-105.638534,40.2556,0.0'
         )
         #import ipdb; ipdb.set_trace()
-        self.assertEquals(
+        self.assertEqual(
             coords_list[2], 
             '-105.641157,40.26643,0.0 '
             '-105.642471,40.26601,0.0 '
@@ -166,7 +166,7 @@ class KmlHelpersTestCase(unittest.TestCase):
         
         coords_list = doc.findall(".//{http://www.google.com/kml/ext/2.2}coord")
         #import ipdb; ipdb.set_trace()
-        self.assertEquals(
+        self.assertEqual(
             coords_list[0], 
             '-122.111 37.11 151.3'
         )

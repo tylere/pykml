@@ -158,7 +158,7 @@ def interpolate_location_series(
         ):
     '''Estimate location data structures based on interpolation'''
     nKnownPositions = len(known_positions)
-    x = range(nKnownPositions)
+    x = list(range(nKnownPositions))
     x_new = [1.0*i*(nKnownPositions-1)/number_of_positions for i in range(number_of_positions)]
     
     # interpolate locations
@@ -301,7 +301,7 @@ def main():
         GX.Tour(playlist),
     )
     
-    print etree.tostring(fld, pretty_print=True)
+    print(etree.tostring(fld, pretty_print=True))
 
     
 if __name__=='__main__':

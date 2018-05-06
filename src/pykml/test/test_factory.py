@@ -45,7 +45,7 @@ class KmlFactoryTestCase(unittest.TestCase):
         doc = KML.kml()
         schema = Schema("ogckml22.xsd")
         self.assertTrue(schema.validate(doc))
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
             '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
@@ -70,7 +70,7 @@ class KmlFactoryTestCase(unittest.TestCase):
         # validate against a remote schema
         self.assertTrue(Schema("http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd").validate(doc))
         
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
             '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
@@ -115,7 +115,7 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
             '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
@@ -163,7 +163,7 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
             '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
@@ -191,7 +191,7 @@ class KmlFactoryTestCase(unittest.TestCase):
         doc = KML.description(
                 '<h1>CDATA Tags are useful!</h1>'
             )
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
               '<description '
                     'xmlns:gx="http://www.google.com/kml/ext/2.2" '
@@ -224,7 +224,7 @@ class KmlFactoryTestCase(unittest.TestCase):
             ),
           ),
         )
-        self.assertEquals(
+        self.assertEqual(
             etree.tostring(doc),
             '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
@@ -268,7 +268,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
             )
         )
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
             'from lxml import etree\n'
             'from pykml.factory import KML_ElementMaker as KML\n'
@@ -305,7 +305,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=None)
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
 'from lxml import etree\n'
 'from pykml.factory import KML_ElementMaker as KML\n'
@@ -358,7 +358,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=schema)
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
             'from lxml import etree\n'
             'from pykml.factory import KML_ElementMaker as KML\n'
