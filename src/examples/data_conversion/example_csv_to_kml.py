@@ -48,7 +48,7 @@ for threshold,color in iconstyles:
         KML.Style(
             KML.IconStyle(
                 KML.color(color),
-                KML.scale(int(threshold/2)),
+                KML.scale(threshold/2.),
                 KML.Icon(
                     KML.href("http://maps.google.com/mapfiles/kml/shapes/earthquake.png"),
                 ),
