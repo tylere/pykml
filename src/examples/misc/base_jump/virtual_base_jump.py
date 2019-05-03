@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import division
 
 # example virtual base jump
 import math
@@ -67,10 +68,10 @@ tour_doc = kml.kml(
 tstep = 0.1
 for t in drange(0,15,tstep):
     pm = kml.Placemark(
-        kml.name(str(t)),
+        kml.name("{name:.1f}".format(name=t)),
         kml.Point(
             kml.altitudeMode("absolute"),
-            kml.coordinates("{lon},{lat},{alt}".format(
+            kml.coordinates("{lon:.8f},{lat:.8f},{alt:.8f}".format(
                 lon=loc0['longitude'] + vx*t,
                 lat=loc0['latitude'] + vy*t,
                 alt=loc0['altitude'] + vz*t + 0.5*g*t**2,
@@ -96,8 +97,8 @@ for t in drange(0,15,tstep):
     
 
 assert Schema('kml22gx.xsd').validate(tour_doc)
-print etree.tostring(tour_doc, pretty_print=True)
+print(etree.tostring(tour_doc, pretty_print=True).decode())
 
 # output a KML file (named based on the Python script)
-outfile = file(__file__.rstrip('.py')+'.kml','w')
-outfile.write(etree.tostring(tour_doc, pretty_print=True))
+with open(__file__.rstrip('.py')+'.kml','wb') as outfile:
+  outfile.write(etree.tostring(tour_doc, pretty_print=True))

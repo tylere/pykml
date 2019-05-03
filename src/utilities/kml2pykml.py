@@ -22,14 +22,12 @@ def main(argv=None):
         filename = argv[1]
         with open(filename) as f:
             kmldoc = parse(f, schema=schema)
-            print write_python_script_for_kml_document(kmldoc)
+            print(write_python_script_for_kml_document(kmldoc))
 
     except Usage, err:
-        print >>sys.stderr, err.msg
-        print >>sys.stderr, "for help use --help"
+        sys.stderr.write(err.msg)
+        sys.stderr.write("for help use --help")
         return 2
 
 if __name__ == "__main__":
     sys.exit(main())
-
-

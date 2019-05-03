@@ -1,7 +1,7 @@
 '''pyKML Factory Module
 
-The pykml.factory module provides objects and functions that can be used to 
-create KML documents element-by-element. 
+The pykml.factory module provides objects and functions that can be used to
+create KML documents element-by-element.
 The factory module leverages `lxml's ElementMaker factory`_ objects to create
 KML objects with the appropriate namespace prefixes.
 
@@ -10,6 +10,7 @@ KML objects with the appropriate namespace prefixes.
 '''
 
 from lxml import etree, objectify
+
 
 nsmap={
     None: "http://www.opengis.net/kml/2.2",
@@ -38,14 +39,14 @@ GX_ElementMaker = objectify.ElementMaker(
 
 def get_factory_object_name(namespace):
     "Returns the correct factory object for a given namespace"
-    
+
     factory_map = {
         'http://www.opengis.net/kml/2.2': 'KML',
         'http://www.w3.org/2005/Atom': 'ATOM',
         'http://www.google.com/kml/ext/2.2': 'GX'
     }
     if namespace:
-        if factory_map.has_key(namespace):
+        if namespace in factory_map:
             factory_object_name = factory_map[namespace]
         else:
             factory_object_name = None
@@ -56,23 +57,28 @@ def get_factory_object_name(namespace):
 
 def write_python_script_for_kml_document(doc):
     "Generates a python script that will construct a given KML document"
-    import StringIO
+    try:  # Python2 support
+        import io
+        import StringIO
+        output = StringIO.StringIO()
+    except ImportError:  # Python3 support
+        import io
+        output = io.StringIO()
     from pykml.helpers import separate_namespace
-    
-    output = StringIO.StringIO()
+
     indent_size = 2
-    
+
     # add the etree package so that comments can be handled
     output.write('from lxml import etree\n')
-    
+
     # add the namespace declaration section
     output.write('from pykml.factory import KML_ElementMaker as KML\n')
     output.write('from pykml.factory import ATOM_ElementMaker as ATOM\n')
     output.write('from pykml.factory import GX_ElementMaker as GX\n')
     output.write('\n')
-    
+
     level = 0
-    xml = StringIO.StringIO(etree.tostring(doc))
+    xml = io.BytesIO(etree.tostring(doc))
     context = etree.iterparse(xml, events=("start", "end", "comment"))
     output.write('doc = ')
     last_action = None
@@ -153,7 +159,7 @@ def write_python_script_for_kml_document(doc):
             elif action in ('end'):
                 level -= 1
                 if last_action == 'start':
-                    output.pos -= 1
+                    output.seek(output.tell()-1)
                     indent = ''
                 else:
                     indent = ' ' * level * indent_size
@@ -161,12 +167,12 @@ def write_python_script_for_kml_document(doc):
                     output.write('{0}  {1}="{2}",\n'.format(indent,att,val))
                 output.write('{0}),\n'.format(indent))
         last_action = action
-    
+
     # remove the last comma
-    output.pos -= 2
+    output.seek(output.tell()-2)
     output.truncate()
     output.write('\n')
-    
+
     for entry in previous_list:
         output.write('doc.addprevious({entry})\n'.format(
             entry=entry
@@ -175,20 +181,23 @@ def write_python_script_for_kml_document(doc):
         output.write('doc.addnext({entry})\n'.format(
             entry=entry
         ))
-    
+
     # add python code to print out the KML document
-    output.write('print etree.tostring(etree.ElementTree(doc),pretty_print=True)\n')
-    
+    output.write('print(etree.tostring(etree.ElementTree(doc),pretty_print=True).decode())\n')
+
     contents = output.getvalue()
     output.close()
     return contents
 
 def kml2pykml():
     "Parse a KML file and generates a pyKML script"
-    import urllib2
+    try:  # Python2 support
+        import urllib2
+    except ImportError:  # Python3 support
+        import urllib.request as urllib2
     from pykml.parser import parse
     from optparse import OptionParser
-    
+
     parser = OptionParser(
         usage="usage: %prog FILENAME_or_URL",
         version="%prog 0.1",
@@ -213,4 +222,4 @@ def kml2pykml():
                 pass #variable was not defined
             else:
                 f.close
-    print write_python_script_for_kml_document(doc)
+    print(write_python_script_for_kml_document(doc))

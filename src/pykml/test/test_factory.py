@@ -25,11 +25,11 @@ def compare_etree(tree1, tree2):
     return True
 
 class KmlFactoryTestCase(unittest.TestCase):
-    
+
     def test_get_factory_object_name(self):
         "Tests obtaining a factory object"
         from pykml.factory import get_factory_object_name
-        
+
         self.assertEqual(
             get_factory_object_name('http://www.opengis.net/kml/2.2'),
             'KML'
@@ -39,19 +39,20 @@ class KmlFactoryTestCase(unittest.TestCase):
             'ATOM'
         )
         self.assertEqual(get_factory_object_name(None), 'KML')
-    
+
     def test_trivial_kml_document(self):
         """Tests the creation of a trivial OGC KML document."""
         doc = KML.kml()
         schema = Schema("ogckml22.xsd")
         self.assertTrue(schema.validate(doc))
-        self.assertEquals(
-            etree.tostring(doc),
-            '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
+        self.assertEqual(
+            etree.tostring(doc).decode(),
+            '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
+                 'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2"/>'
         )
-    
+
     def test_basic_kml_document_2(self):
         """Tests the creation of a basic OGC KML document."""
         doc = KML.kml(
@@ -69,11 +70,12 @@ class KmlFactoryTestCase(unittest.TestCase):
         self.assertTrue(Schema("ogckml22.xsd").validate(doc))
         # validate against a remote schema
         self.assertTrue(Schema("http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd").validate(doc))
-        
-        self.assertEquals(
-            etree.tostring(doc),
-            '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
+
+        self.assertEqual(
+            etree.tostring(doc).decode(),
+            '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
+                 'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
               '<Document>'
                 '<name>KmlFile</name>'
@@ -86,7 +88,7 @@ class KmlFactoryTestCase(unittest.TestCase):
               '</Document>'
             '</kml>'
         )
-    
+
     def test_basic_kml_document(self):
         """Tests the creation of a basic KML with Google Extensions ."""
         doc = KML.kml(
@@ -115,10 +117,11 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEquals(
-            etree.tostring(doc),
-            '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
+        self.assertEqual(
+            etree.tostring(doc).decode(),
+            '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
+                 'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
               '<gx:Tour>'
                 '<gx:Playlist>'
@@ -145,7 +148,7 @@ class KmlFactoryTestCase(unittest.TestCase):
               '</gx:Tour>'
             '</kml>'
         )
-    
+
     def test_kml_document_with_atom_element(self):
         """Tests the creation of a KML document with an ATOM element."""
         doc = KML.kml(
@@ -163,10 +166,11 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEquals(
-            etree.tostring(doc),
-            '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
+        self.assertEqual(
+            etree.tostring(doc).decode(),
+            '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
+                 'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
               '<Document>'
                 '<atom:author>'
@@ -187,23 +191,23 @@ class KmlFactoryTestCase(unittest.TestCase):
         """Tests the creation of a KML document with a CDATA element."""
         from pykml.factory import KML_ElementMaker as KML
         from lxml import etree
-        
+
         doc = KML.description(
                 '<h1>CDATA Tags are useful!</h1>'
             )
-        self.assertEquals(
-            etree.tostring(doc),
+        self.assertEqual(
+            etree.tostring(doc).decode(),
               '<description '
-                    'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                     'xmlns:atom="http://www.w3.org/2005/Atom" '
+                    'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                     'xmlns="http://www.opengis.net/kml/2.2">'
                   '&lt;h1&gt;CDATA Tags are useful!&lt;/h1&gt;'
               '</description>'
         )
-    
+
     def test_kml_document_with_cdata_description_2(self):
         """Tests the creation of a KML document with a CDATA element."""
-        
+
         from pykml.factory import KML_ElementMaker as KML
         from pykml.factory import ATOM_ElementMaker as ATOM
         from pykml.factory import GX_ElementMaker as GX
@@ -224,10 +228,11 @@ class KmlFactoryTestCase(unittest.TestCase):
             ),
           ),
         )
-        self.assertEquals(
-            etree.tostring(doc),
-            '<kml xmlns:gx="http://www.google.com/kml/ext/2.2" '
+        self.assertEqual(
+            etree.tostring(doc).decode(),
+            '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
+                 'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
               '<Document>'
                 '<Placemark>'
@@ -248,11 +253,11 @@ class KmlFactoryTestCase(unittest.TestCase):
 
 
 class GeneratePythonScriptTestCase(unittest.TestCase):
-    
+
     def test_write_python_script_for_kml_document(self):
         """Tests the creation of a trivial OGC KML document."""
         from pykml.factory import write_python_script_for_kml_document
-        
+
         doc = KML.kml(
             KML.Document(
                 ATOM.author(
@@ -268,7 +273,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
             )
         )
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
             'from lxml import etree\n'
             'from pykml.factory import KML_ElementMaker as KML\n'
@@ -290,13 +295,13 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
             '    ),\n'
             '  ),\n'
             ')\n'
-            'print etree.tostring(etree.ElementTree(doc),pretty_print=True)\n'
+            'print(etree.tostring(etree.ElementTree(doc),pretty_print=True).decode())\n'
         )
 
     def test_write_python_script_for_multiline_coordinate_string(self):
         """Tests the creation of a trivial OGC KML document."""
         from pykml.factory import write_python_script_for_kml_document
-        
+
         test_datafile = path.join(
             path.dirname(__file__),
             'testfiles',
@@ -305,7 +310,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=None)
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
 'from lxml import etree\n'
 'from pykml.factory import KML_ElementMaker as KML\n'
@@ -337,7 +342,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
 '    ),\n'
 '  ),\n'
 ')\n'
-'print etree.tostring(etree.ElementTree(doc),pretty_print=True)\n'
+'print(etree.tostring(etree.ElementTree(doc),pretty_print=True).decode())\n'
         )
 
 
@@ -347,7 +352,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         import tempfile
         from pykml.parser import parse
         from pykml.factory import write_python_script_for_kml_document
-        
+
         test_datafile = path.join(
             path.dirname(__file__),
             'testfiles',
@@ -358,7 +363,7 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=schema)
         script = write_python_script_for_kml_document(doc)
-        self.assertEquals(
+        self.assertEqual(
             script,
             'from lxml import etree\n'
             'from pykml.factory import KML_ElementMaker as KML\n'
@@ -381,14 +386,14 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
             '    ),\n'
             '  ),\n'
             ')\n'
-            'print etree.tostring(etree.ElementTree(doc),pretty_print=True)\n'
+            'print(etree.tostring(etree.ElementTree(doc),pretty_print=True).decode())\n'
         )
         # create a temporary python file
         handle, tfile = tempfile.mkstemp(suffix='.py')
-        #print tfile
+        #print(tfile)
         with open(tfile, 'w') as f:
             f.write(script)
-        
+
         # execute the temporary python file to create a KML file
         import subprocess
         current_env = os.environ.copy()
@@ -403,19 +408,19 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
                     env=current_env
             )
         self.assertEqual(exit_code, 0)
-        
+
         # parse and validate the KML generated by the temporary script
         doc2 = parse(temp_kml_file, schema=schema)
         # test that the root element is as expected
         self.assertEqual(doc2.docinfo.root_name, 'kml')
-    
+
     def test_write_python_script_for_kml_document_with_namespaces(self):
         """Tests the creation of an OGC KML document with several namespaces"""
         import os
         import tempfile
         from pykml.parser import parse
         from pykml.factory import write_python_script_for_kml_document
-        
+
         test_datafile = path.join(
             path.dirname(__file__),
             'testfiles',
@@ -425,13 +430,13 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=schema)
         script = write_python_script_for_kml_document(doc)
-        
+
         # create a temporary python file
         handle, tfile = tempfile.mkstemp(suffix='.py')
-        #print tfile  #uncomment to print the temporary filename
+        #print(tfile)  #uncomment to print the temporary filename
         with open(tfile, 'w') as f:
             f.write(script)
-        
+
         # execute the temporary python file to create a KML file
         # set the PYTHONPATH variable so that it references the root
         # of the pyKML library
@@ -441,23 +446,23 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
                                     os.path.join(path.dirname(__file__),'../..')
                                 )
         handle, temp_kml_file = tempfile.mkstemp(suffix='.kml')
-        #print temp_kml_file
+        #print(temp_kml_file)
         with open(temp_kml_file, 'w') as f:
             exit_code = subprocess.call(["python",tfile], stdout=f, env=current_env)
         self.assertEqual(exit_code, 0)
-        
+
         # parse and validate the KML generated by the temporary script
         doc2 = parse(temp_kml_file, schema=schema)
         # test that the root element is as expected
         self.assertEqual(doc2.docinfo.root_name, 'kml')
-        
+
     def test_write_python_script_for_kml_document_with_comments(self):
         """Tests the creation of an OGC KML document with several comments"""
         import os
         import tempfile
         from pykml.parser import parse
         from pykml.factory import write_python_script_for_kml_document
-        
+
         test_datafile = path.join(
             path.dirname(__file__),
             'testfiles',
@@ -467,13 +472,13 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
         with open(test_datafile) as f:
             doc = parse(f, schema=schema)
         script = write_python_script_for_kml_document(doc)
-        
+
         # create a temporary python file
         handle, tfile = tempfile.mkstemp(suffix='.py')
-        #print tfile  # Useful for debugging
+        #print(tfile)  # Useful for debugging
         with open(tfile, 'w') as f:
             f.write(script)
-        
+
         # execute the temporary python file to create a KML file
         import subprocess
         current_env = os.environ.copy()
@@ -481,11 +486,11 @@ class GeneratePythonScriptTestCase(unittest.TestCase):
                                     os.path.join(path.dirname(__file__),'../..')
                                 )
         handle, temp_kml_file = tempfile.mkstemp(suffix='.kml')
-        #print temp_kml_file  # Useful for debugging
+        #print(temp_kml_file)  # Useful for debugging
         with open(temp_kml_file, 'w') as f:
             exit_code = subprocess.call(["python",tfile], stdout=f, env=current_env)
         self.assertEqual(exit_code, 0)
-        
+
         # parse and validate the KML generated by the temporary script
         doc2 = parse(temp_kml_file, schema=schema)
         # test that the root element is as expected

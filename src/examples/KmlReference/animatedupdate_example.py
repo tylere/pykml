@@ -71,12 +71,12 @@ doc = KML.kml(
   )
 )
 
-print etree.tostring(doc, pretty_print=True)
+print(etree.tostring(doc, pretty_print=True).decode())
 
 # output a KML file (named based on the Python script)
-outfile = file(__file__.rstrip('.py')+'.kml','w')
-outfile.write(etree.tostring(doc, pretty_print=True))
+
+with open(__file__.rstrip('.py')+'.kml','w') as outfile:
+  outfile.write(etree.tostring(doc, pretty_print=True).decode())
 
 schema = Schema('kml22gx.xsd')
-import ipdb; ipdb.set_trace()
 schema.validate(doc)
