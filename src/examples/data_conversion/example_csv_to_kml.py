@@ -5,7 +5,6 @@ References:
 
 '''
 import csv
-import urllib2
 from datetime import datetime
 from lxml import etree
 from pykml.factory import KML_ElementMaker as KML
@@ -13,7 +12,7 @@ from pykml.factory import KML_ElementMaker as KML
 def makeExtendedDataElements(datadict):
     '''Converts a dictionary to ExtendedData/Data elements'''
     edata = KML.ExtendedData()
-    for key, value in datadict.iteritems():
+    for key, value in datadict.items():
         edata.append(KML.Data(KML.value(value), name=key + "_"))
     return edata
 
@@ -49,7 +48,7 @@ for threshold,color in iconstyles:
         KML.Style(
             KML.IconStyle(
                 KML.color(color),
-                KML.scale(threshold/2),
+                KML.scale(threshold/2.),
                 KML.Icon(
                     KML.href("http://maps.google.com/mapfiles/kml/shapes/earthquake.png"),
                 ),
@@ -63,9 +62,9 @@ for threshold,color in iconstyles:
 doc.append(KML.Folder())
 
 # read in a csv file, and create a placemark for each record
-url="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M2.5.txt"
-fileobject = urllib2.urlopen(url)
-for row in csv.DictReader(fileobject):
+#url="http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M2.5.txt"
+with open('eqs7day-M2.5.txt', 'r') as fd:
+  for row in csv.DictReader(fd):
     timestamp = datetime.strptime(row["Datetime"], "%A, %B %d, %Y %H:%M:%S %Z")
     pm = KML.Placemark(
         KML.name("Magnitude={0}".format(row['Magnitude'])),
@@ -89,4 +88,4 @@ from pykml.parser import Schema
 schema_gx = Schema("kml22gx.xsd")
 schema_gx.assertValid(doc)
 
-print etree.tostring(doc, pretty_print=True)
+print(etree.tostring(doc, pretty_print=True).decode())

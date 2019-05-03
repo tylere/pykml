@@ -4,7 +4,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-version = '0.1.3'
+version = '0.2.0'
 
 setup(
     name='pykml',
@@ -21,7 +21,7 @@ setup(
         ],
     },
     install_requires=[
-        'lxml>=2.2.6',
+        'lxml>=3.3.6',
     ],
     tests_require=['nose'],
     description="Python KML library",

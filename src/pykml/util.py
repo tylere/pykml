@@ -1,6 +1,6 @@
 """ pyKML Utility Module
 
-The pykml.utility module provides utility functions that operate on KML 
+The pykml.utility module provides utility functions that operate on KML
 documents
 """
 import re
@@ -11,17 +11,17 @@ def clean_xml_string(input_string):
     return ''.join(c for c in input_string if ascii.isascii(c))
 
 def format_xml_with_cdata(
-        obj, 
+        obj,
         cdata_elements = ['description', 'text', 'linkDescription', 'displayName']
     ):
     from lxml import etree
 
     # Convert Objectify document to lxml.etree (is there a better way?)
     root = etree.fromstring(etree.tostring(etree.ElementTree(obj)))
-    
+
     #Create an xpath expression to search for all desired cdata elements
-    xpath = '|'.join(map(lambda tag: '//kml:' + tag, cdata_elements))
-    
+    xpath = '|'.join(['//kml:' + tag for tag in cdata_elements])
+
     results = root.xpath(
         xpath,
         namespaces = {'kml': 'http://www.opengis.net/kml/2.2'}
@@ -39,9 +39,9 @@ def count_elements(doc):
         except:
             namespace = None
             element_name = el.tag
-        if not summary.has_key(namespace):
+        if namespace not in summary:
             summary[namespace] = {}
-        if not summary[namespace].has_key(element_name):
+        if element_name not in summary[namespace]:
             summary[namespace][element_name] = 1
         else:
             summary[namespace][element_name] += 1
@@ -58,7 +58,7 @@ def wrap_angle180(angle):
 def to_wkt_list(doc):
     '''converts all geometries to Well Know Text format'''
     from lxml import etree
-    
+
     def ring_coords_to_wkt(ring):
         '''converts LinearRing coordinates to WKT style coordinates'''
         return(
@@ -66,7 +66,7 @@ def to_wkt_list(doc):
                ring.coordinates.text.strip()
             ).replace(' ','@@').replace(',',' ').replace('@@',', ')
         )
-    
+
     ring_wkt_list = []
     context = etree.iterwalk(
              doc,
@@ -77,7 +77,7 @@ def to_wkt_list(doc):
                         '{http://www.opengis.net/kml/2.2}MultiPolygon']:
             #print("%s: %s" % (action, elem.tag))
             if elem.tag == '{http://www.opengis.net/kml/2.2}Polygon':
-                
+
                 # outer boundary
                 ringlist = [
                     '({0})'.format(
@@ -90,7 +90,7 @@ def to_wkt_list(doc):
                             ring_coords_to_wkt(obj.LinearRing)
                         )
                     )
-                
+
                 wkt = 'POLYGON ({rings})'.format(rings=', '.join(ringlist))
                 ring_wkt_list.append(wkt)
     return(ring_wkt_list)
@@ -106,20 +106,25 @@ def convert_csv_to_kml(
         snippet_field='snippet',
     ):
     '''Reads a CSV document from a file-like object and converts it to KML'''
-    
+
     import csv
     #import urllib2
     from pykml.factory import KML_ElementMaker as KML
-    
+    def iteritems(d):
+        try:
+            return d.iteritems()
+        except AttributeError:
+            return d.items()
+
     # create a basic KML document
     kmldoc = KML.kml(KML.Document(
         KML.Folder(
             KML.name("KmlFile"))
         )
     )
-    
+
     csvdoc = csv.DictReader(fileObj)
-    
+
     # if field is not found, check for other common field names
     if latitude_field not in csvdoc.fieldnames:
         match_field = None
@@ -192,30 +197,30 @@ def convert_csv_to_kml(
         raise KeyError(
             'Longitude field ({0}) was not found in the CSV file '
             'column names {1}'.format(longitude_field,csvdoc.fieldnames)
-        )    
+        )
     for row in csvdoc:
         pm = KML.Placemark()
-        if row.has_key(name_field):
+        if name_field in row:
             pm.append(
                 KML.name(clean_xml_string(row[name_field]))
             )
-        if row.has_key(snippet_field):
+        if snippet_field in row:
             pm.append(
                 KML.Snippet(clean_xml_string(row[snippet_field]),maxLines="2")
             )
-        if row.has_key(description_field):
+        if description_field in row:
             pm.append(
                 KML.description(clean_xml_string(row[description_field]))
             )
         else:
             desc = '<table border="1"'
-            for key,val in row.iteritems():
+            for key,val in iteritems(row):
                 desc += '<tr><th>{0}</th><td>{1}</td></tr>'.format(key,val)
             desc += '</table>'
             pm.append(KML.description(clean_xml_string(desc)))
-        
+
         coord_list = [row[longitude_field], row[latitude_field]]
-        if row.has_key(altitude_field):
+        if altitude_field in row:
             coord_list += [row[altitude_field]]
         pm.append(
             KML.Point(
@@ -228,14 +233,17 @@ def convert_csv_to_kml(
 
 def csv2kml():
     """Parse a CSV file and generates a KML document
-    
+
     Example: csv2kml test.csv
     """
     import sys
-    import urllib2
+    try:  # Python2 support
+        import urllib2
+    except ImportError:  # Python3 support
+        import urllib.request as urllib2
     from optparse import OptionParser
     from lxml import etree
-    
+
     parser = OptionParser(
         usage="usage: %prog FILENAME_or_URL",
         version="%prog 0.1",
@@ -257,7 +265,7 @@ def csv2kml():
         parser.error("wrong number of arguments")
     else:
         uri = args[0]
-    
+
     # try to open the URI as both a local file and a remote URL
     try:
         f = open(uri)
@@ -268,7 +276,7 @@ def csv2kml():
             raise ValueError('unable to load URI {0}'.format(uri))
     except:
         raise
-    
+
     kmldoc = convert_csv_to_kml(f,
         latitude_field = options.latitude_field,
         longitude_field = options.longitude_field,
@@ -285,6 +293,6 @@ def csv2kml():
         pass #variable was not defined
     else:
         f.close
-    
+
     kmlstr = format_as_cdata(etree.tostring(kmldoc, pretty_print=True))
     sys.stdout.write(kmlstr)

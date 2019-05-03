@@ -1,6 +1,6 @@
-from pykml.kml_gx.factory import KML_ElementMaker as KML
-from pykml.kml_gx.factory import ATOM_ElementMaker as ATOM
-from pykml.kml_gx.factory import GX_ElementMaker as GX
+from pykml.factory import KML_ElementMaker as KML
+from pykml.factory import ATOM_ElementMaker as ATOM
+from pykml.factory import GX_ElementMaker as GX
 
 doc = KML.kml(
   KML.Document(
@@ -98,17 +98,17 @@ doc = KML.kml(
     id="transYellowPoly",    ),
     KML.Style(
       KML.BalloonStyle(
-        KML.text("
+        KML.text("""
           <b>$[name]</b>
           <br /><br />
           $[description]
-        "),
+        """),
       ),
     id="noDrivingDirections",    ),
     KML.Folder(
       KML.name("Placemarks"),
-      KML.description("These are just some of the different kinds of placemarks with
-        which you can mark your favorite places"),
+      KML.description("These are just some of the different kinds of placemarks with"
+                      "which you can mark your favorite places"),
       KML.LookAt(
         KML.longitude("-122.0839597145766"),
         KML.latitude("37.42222904525232"),
@@ -119,8 +119,8 @@ doc = KML.kml(
       ),
       KML.Placemark(
         KML.name("Simple placemark"),
-        KML.description("Attached to the ground. Intelligently places itself at the
-          height of the underlying terrain."),
+        KML.description("Attached to the ground. Intelligently places itself at the"
+                        "height of the underlying terrain."),
         KML.Point(
           KML.coordinates("-122.0822035425683,37.42228990140251,0"),
         ),
@@ -146,8 +146,7 @@ doc = KML.kml(
       KML.Placemark(
         KML.name("Extruded placemark"),
         KML.visibility("0"),
-        KML.description("Tethered to the ground by a customizable
-          "tail""),
+        KML.description("Tethered to the ground by a customizable 'tail'"),
         KML.LookAt(
           KML.longitude("-122.0845787421525"),
           KML.latitude("37.42215078737763"),
@@ -167,8 +166,8 @@ doc = KML.kml(
     KML.Folder(
       KML.name("Styles and Markup"),
       KML.visibility("0"),
-      KML.description("With KML it is easy to create rich, descriptive markup to
-        annotate and enrich your placemarks"),
+      KML.description("With KML it is easy to create rich, descriptive markup to"
+                      "annotate and enrich your placemarks"),
       KML.LookAt(
         KML.longitude("-122.0845787422371"),
         KML.latitude("37.42215078726837"),
@@ -181,8 +180,7 @@ doc = KML.kml(
       KML.Document(
         KML.name("Highlighted Icon"),
         KML.visibility("0"),
-        KML.description("Place your mouse over the icon to see it display the new
-          icon"),
+        KML.description("Place your mouse over the icon to see it display the new icon"),
         KML.LookAt(
           KML.longitude("-122.0856552124024"),
           KML.latitude("37.4224281311035"),
@@ -227,7 +225,7 @@ doc = KML.kml(
       KML.Placemark(
         KML.name("Descriptive HTML"),
         KML.visibility("0"),
-        KML.description("Click on the blue link!<br><br>
+        KML.description("""Click on the blue link!<br><br>
 Placemark descriptions can be enriched by using many standard HTML tags.<br>
 For example:
 <hr>
@@ -325,7 +323,7 @@ Simple Tables:<br>
 <tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td></tr>
 </table>
 <br>
-[Did you notice that double-clicking on the placemark doesn't cause the viewer to take you anywhere? This is because it is possible to directly author a "placeless placemark". If you look at the code for this example, you will see that it has neither a point coordinate nor a LookAt element.]"),
+[Did you notice that double-clicking on the placemark doesn't cause the viewer to take you anywhere? This is because it is possible to directly author a "placeless placemark". If you look at the code for this example, you will see that it has neither a point coordinate nor a LookAt element.]"""),
       ),
     ),
     KML.Folder(
@@ -359,13 +357,13 @@ Simple Tables:<br>
     KML.Folder(
       KML.name("Screen Overlays"),
       KML.visibility("0"),
-      KML.description("Screen overlays have to be authored directly in KML. These
-        examples illustrate absolute and dynamic positioning in screen space."),
+      KML.description("Screen overlays have to be authored directly in KML. These"
+                      " examples illustrate absolute and dynamic positioning in screen space."),
       KML.ScreenOverlay(
         KML.name("Simple crosshairs"),
         KML.visibility("0"),
-        KML.description("This screen overlay uses fractional positioning to put the
-          image in the exact center of the screen"),
+        KML.description("This screen overlay uses fractional positioning to put the"
+                        " image in the exact center of the screen"),
         KML.Icon(
           KML.href("http://code.google.com/apis/kml/documentation/crosshairs.png"),
         ),
@@ -444,9 +442,9 @@ Simple Tables:<br>
     KML.Folder(
       KML.name("Paths"),
       KML.visibility("0"),
-      KML.description("Examples of paths. Note that the tessellate tag is by default
-        set to 0. If you want to create tessellated lines, they must be authored
-        (or edited) directly in KML."),
+      KML.description("Examples of paths. Note that the tessellate tag is by default"
+                      "set to 0. If you want to create tessellated lines, they must be authored"
+                      "(or edited) directly in KML."),
       KML.Placemark(
         KML.name("Tessellated"),
         KML.visibility("0"),
@@ -461,8 +459,8 @@ Simple Tables:<br>
         ),
         KML.LineString(
           KML.tessellate("1"),
-          KML.coordinates(" -112.0814237830345,36.10677870477137,0
-            -112.0870267752693,36.0905099328766,0 "),
+          KML.coordinates(""" -112.0814237830345,36.10677870477137,0
+            -112.0870267752693,36.0905099328766,0 """),
         ),
       ),
       KML.Placemark(
@@ -479,8 +477,8 @@ Simple Tables:<br>
         ),
         KML.LineString(
           KML.tessellate("0"),
-          KML.coordinates(" -112.080622229595,36.10673460007995,0
-            -112.085242575315,36.09049598612422,0 "),
+          KML.coordinates(""" -112.080622229595,36.10673460007995,0
+            -112.085242575315,36.09049598612422,0 """),
         ),
       ),
       KML.Placemark(
@@ -499,7 +497,7 @@ Simple Tables:<br>
         KML.LineString(
           KML.tessellate("1"),
           KML.altitudeMode("absolute"),
-          KML.coordinates(" -112.265654928602,36.09447672602546,2357
+          KML.coordinates(""" -112.265654928602,36.09447672602546,2357
             -112.2660384528238,36.09342608838671,2357
             -112.2668139013453,36.09251058776881,2357
             -112.2677826834445,36.09189827357996,2357
@@ -509,7 +507,7 @@ Simple Tables:<br>
             -112.2690144567276,36.08850916060472,2357
             -112.2681528815339,36.08753813597956,2357
             -112.2670588176031,36.08682685262568,2357
-            -112.2657374587321,36.08646312301303,2357 "),
+            -112.2657374587321,36.08646312301303,2357 """),
         ),
       ),
       KML.Placemark(
@@ -529,7 +527,7 @@ Simple Tables:<br>
           KML.extrude("1"),
           KML.tessellate("1"),
           KML.altitudeMode("absolute"),
-          KML.coordinates(" -112.2550785337791,36.07954952145647,2357
+          KML.coordinates(""" -112.2550785337791,36.07954952145647,2357
             -112.2549277039738,36.08117083492122,2357
             -112.2552505069063,36.08260761307279,2357
             -112.2564540158376,36.08395660588506,2357
@@ -539,7 +537,7 @@ Simple Tables:<br>
             -112.262073428656,36.08626019085147,2357
             -112.2633204928495,36.08621519860091,2357
             -112.2644963846444,36.08627897945274,2357
-            -112.2656969554589,36.08649599090644,2357 "),
+            -112.2656969554589,36.08649599090644,2357 """),
         ),
       ),
       KML.Placemark(
@@ -558,7 +556,7 @@ Simple Tables:<br>
         KML.LineString(
           KML.tessellate("1"),
           KML.altitudeMode("relativeToGround"),
-          KML.coordinates(" -112.2532845153347,36.09886943729116,645
+          KML.coordinates(""" -112.2532845153347,36.09886943729116,645
             -112.2540466121145,36.09919570465255,645
             -112.254734666947,36.09984998366178,645
             -112.255493345654,36.10051310621746,645
@@ -568,7 +566,7 @@ Simple Tables:<br>
             -112.2584106072308,36.10229131995655,645
             -112.2596588987972,36.10240001286358,645
             -112.2610581199487,36.10213176873407,645
-            -112.2626285262793,36.10157011437219,645 "),
+            -112.2626285262793,36.10157011437219,645 """),
         ),
       ),
       KML.Placemark(
@@ -588,7 +586,7 @@ Simple Tables:<br>
           KML.extrude("1"),
           KML.tessellate("1"),
           KML.altitudeMode("relativeToGround"),
-          KML.coordinates(" -112.2656634181359,36.09445214722695,630
+          KML.coordinates(""" -112.2656634181359,36.09445214722695,630
             -112.2652238941097,36.09520916122063,630
             -112.2645079986395,36.09580763864907,630
             -112.2638827428817,36.09628572284063,630
@@ -598,7 +596,7 @@ Simple Tables:<br>
             -112.264327720538,36.09880337400301,630
             -112.2642436562271,36.09963644790288,630
             -112.2639148687042,36.10055381117246,630
-            -112.2626894973474,36.10149062823369,630 "),
+            -112.2626894973474,36.10149062823369,630 """),
         ),
       ),
     ),
@@ -609,8 +607,8 @@ Simple Tables:<br>
       KML.Folder(
         KML.name("Google Campus"),
         KML.visibility("0"),
-        KML.description("A collection showing how easy it is to create 3-dimensional
-          buildings"),
+        KML.description("A collection showing how easy it is to create 3-dimensional"
+                        "buildings"),
         KML.LookAt(
           KML.longitude("-122.084120030116"),
           KML.latitude("37.42174011925477"),
@@ -628,7 +626,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -122.0848938459612,37.42257124044786,17
+                KML.coordinates(""" -122.0848938459612,37.42257124044786,17
                   -122.0849580979198,37.42211922626856,17
                   -122.0847469573047,37.42207183952619,17
                   -122.0845725380962,37.42209006729676,17
@@ -649,7 +647,7 @@ Simple Tables:<br>
                   -122.0845036949503,37.4226514386435,17
                   -122.0848020460801,37.42261133916315,17
                   -122.0847882750515,37.42256395055121,17
-                  -122.0848938459612,37.42257124044786,17 "),
+                  -122.0848938459612,37.42257124044786,17 """),
               ),
             ),
           ),
@@ -663,7 +661,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -122.0857412771483,37.42227033155257,17
+                KML.coordinates(""" -122.0857412771483,37.42227033155257,17
                   -122.0858169768481,37.42231408832346,17
                   -122.085852582875,37.42230337469744,17
                   -122.0858799945639,37.42225686138789,17
@@ -681,7 +679,7 @@ Simple Tables:<br>
                   -122.0856769818632,37.42281815323651,17
                   -122.0860162273783,37.42244918858722,17
                   -122.0857260327004,37.42229239604253,17
-                  -122.0857412771483,37.42227033155257,17 "),
+                  -122.0857412771483,37.42227033155257,17 """),
               ),
             ),
           ),
@@ -695,7 +693,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -122.0857862287242,37.42136208886969,25
+                KML.coordinates(""" -122.0857862287242,37.42136208886969,25
                   -122.0857312990603,37.42136935989481,25
                   -122.0857312992918,37.42140934910903,25
                   -122.0856077073679,37.42138390166565,25
@@ -718,7 +716,7 @@ Simple Tables:<br>
                   -122.0858640462341,37.42147115002957,25
                   -122.0858548911215,37.42140571326184,25
                   -122.0858091162768,37.4214057134039,25
-                  -122.0857862287242,37.42136208886969,25 "),
+                  -122.0857862287242,37.42136208886969,25 """),
               ),
             ),
           ),
@@ -732,7 +730,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -122.0844371128284,37.42177253003091,19
+                KML.coordinates(""" -122.0844371128284,37.42177253003091,19
                   -122.0845118855746,37.42191111542896,19
                   -122.0850470999805,37.42178755121535,19
                   -122.0850719913391,37.42143663023161,19
@@ -756,7 +754,7 @@ Simple Tables:<br>
                   -122.0841447047739,37.42167881534569,19
                   -122.084144704223,37.42181720660197,19
                   -122.0842503333074,37.4218170700446,19
-                  -122.0844371128284,37.42177253003091,19 "),
+                  -122.0844371128284,37.42177253003091,19 """),
               ),
             ),
           ),
@@ -779,22 +777,22 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -77.05788457660967,38.87253259892824,100
+                KML.coordinates(""" -77.05788457660967,38.87253259892824,100
                   -77.05465973756702,38.87291016281703,100
                   -77.05315536854791,38.87053267794386,100
                   -77.05552622493516,38.868757801256,100
                   -77.05844056290393,38.86996206506943,100
-                  -77.05788457660967,38.87253259892824,100 "),
+                  -77.05788457660967,38.87253259892824,100 """),
               ),
             ),
             KML.innerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -77.05668055019126,38.87154239798456,100
+                KML.coordinates(""" -77.05668055019126,38.87154239798456,100
                   -77.05542625960818,38.87167890344077,100
                   -77.05485125901024,38.87076535397792,100
                   -77.05577677433152,38.87008686581446,100
                   -77.05691162017543,38.87054446963351,100
-                  -77.05668055019126,38.87154239798456,100 "),
+                  -77.05668055019126,38.87154239798456,100 """),
               ),
             ),
           ),
@@ -803,9 +801,9 @@ Simple Tables:<br>
       KML.Folder(
         KML.name("Absolute and Relative"),
         KML.visibility("0"),
-        KML.description("Four structures whose roofs meet exactly. Turn on/off
-          terrain to see the difference between relative and absolute
-          positioning."),
+        KML.description("Four structures whose roofs meet exactly. Turn on/off"
+                        "terrain to see the difference between relative and absolute"
+                        "positioning."),
         KML.LookAt(
           KML.longitude("-112.3348969157552"),
           KML.latitude("36.14845533214919"),
@@ -823,11 +821,11 @@ Simple Tables:<br>
             KML.altitudeMode("absolute"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -112.3372510731295,36.14888505105317,1784
+                KML.coordinates(""" -112.3372510731295,36.14888505105317,1784
                   -112.3356128688403,36.14781540589019,1784
                   -112.3368169371048,36.14658677734382,1784
                   -112.3384408457543,36.14762778914076,1784
-                  -112.3372510731295,36.14888505105317,1784 "),
+                  -112.3372510731295,36.14888505105317,1784 """),
               ),
             ),
           ),
@@ -842,11 +840,11 @@ Simple Tables:<br>
             KML.altitudeMode("absolute"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -112.3396586818843,36.14637618647505,1784
+                KML.coordinates(""" -112.3396586818843,36.14637618647505,1784
                   -112.3380597654315,36.14531751871353,1784
                   -112.3368254237788,36.14659596244607,1784
                   -112.3384555043203,36.14762621763982,1784
-                  -112.3396586818843,36.14637618647505,1784 "),
+                  -112.3396586818843,36.14637618647505,1784 """),
               ),
             ),
           ),
@@ -868,7 +866,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -112.3349463145932,36.14988705767721,100
+                KML.coordinates(""" -112.3349463145932,36.14988705767721,100
                   -112.3354019540677,36.14941108398372,100
                   -112.3344428289146,36.14878490381308,100
                   -112.3331289492913,36.14780840132443,100
@@ -876,7 +874,7 @@ Simple Tables:<br>
                   -112.331131440106,36.1474173426228,100
                   -112.332616324338,36.14845453364654,100
                   -112.3339876620524,36.14926570522069,100
-                  -112.3349463145932,36.14988705767721,100 "),
+                  -112.3349463145932,36.14988705767721,100 """),
               ),
             ),
           ),
@@ -899,7 +897,7 @@ Simple Tables:<br>
             KML.altitudeMode("relativeToGround"),
             KML.outerBoundaryIs(
               KML.LinearRing(
-                KML.coordinates(" -112.3348783983763,36.1514008468736,100
+                KML.coordinates(""" -112.3348783983763,36.1514008468736,100
                   -112.3372535345629,36.14888517553886,100
                   -112.3356068927954,36.14781612679284,100
                   -112.3350034807972,36.14846469024177,100
@@ -907,7 +905,7 @@ Simple Tables:<br>
                   -112.3345888301373,36.15026229372507,100
                   -112.3337937856278,36.14978096026463,100
                   -112.3331798208424,36.1504472788618,100
-                  -112.3348783983763,36.1514008468736,100 "),
+                  -112.3348783983763,36.1514008468736,100 """),
               ),
             ),
           ),
