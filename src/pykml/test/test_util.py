@@ -4,6 +4,8 @@ from lxml import etree
 from pykml.parser import Schema
 from pykml.parser import parse
 from pykml.factory import KML_ElementMaker as KML
+from . import compare_xml
+
 
 class KmlUtilTestCase(unittest.TestCase):
 
@@ -139,7 +141,6 @@ class KmlUtilTestCase(unittest.TestCase):
 
     def test_getXmlWithCDATA(self):
         '''tests the format_as_cdata function'''
-        from pykml.util import format_xml_with_cdata
 
         kmlobj = KML.kml(
             KML.Document(
@@ -153,8 +154,8 @@ class KmlUtilTestCase(unittest.TestCase):
                 )
             )
         )
-        self.assertEqual(
-            etree.tostring(format_xml_with_cdata(kmlobj)).decode(),
+
+        target = etree.fromstring(
             '<kml'
               ' xmlns:atom="http://www.w3.org/2005/Atom"'
               ' xmlns:gx="http://www.google.com/kml/ext/2.2"'
@@ -169,14 +170,16 @@ class KmlUtilTestCase(unittest.TestCase):
                   '<displayName><![CDATA[<html>]]></displayName>'
                 '</Placemark>'
               '</Document>'
-            '</kml>'
-        )
+            '</kml>')
+
+        # Use xmldiff to compare the generated XML tree.
+        self.assertTrue(compare_xml(target, kmlobj))
+
 
     def test_convert_csv_to_kml(self):
         """Tests the convert_csv_to_kml function"""
         import tempfile
         from pykml.util import convert_csv_to_kml
-        from pykml.util import format_xml_with_cdata
 
         # create a CSV file for testing
         csvfile = tempfile.TemporaryFile(mode='w+')
@@ -186,11 +189,10 @@ class KmlUtilTestCase(unittest.TestCase):
         csvfile.write('third,"The third one (with quotes)",45.0,-88.0\n')
         csvfile.seek(0)
 
-        kmldoc = convert_csv_to_kml(csvfile)
+        kmlobj = convert_csv_to_kml(csvfile)
         csvfile.close()
 
-        self.assertEqual(
-            etree.tostring(format_xml_with_cdata(kmldoc)).decode(),
+        target = etree.fromstring(
             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
@@ -204,10 +206,10 @@ class KmlUtilTestCase(unittest.TestCase):
                             '<description>'
                                 '<![CDATA['
                                   '<table border="1"'
+                                    '<tr><th>name</th><td>first</td></tr>'
                                     '<tr><th>snippet</th><td>The first one</td></tr>'
                                     '<tr><th>lat</th><td>45.0</td></tr>'
                                     '<tr><th>lon</th><td>-90.0</td></tr>'
-                                    '<tr><th>name</th><td>first</td></tr>'
                                   '</table>'
                                 ']]>'
                             '</description>'
@@ -218,7 +220,7 @@ class KmlUtilTestCase(unittest.TestCase):
                         '<Placemark>'
                             '<name>second</name>'
                             '<Snippet maxLines="2">The second one</Snippet>'
-                            '<description><![CDATA[<table border="1"<tr><th>snippet</th><td>The second one</td></tr><tr><th>lat</th><td>46.0</td></tr><tr><th>lon</th><td>-89.0</td></tr><tr><th>name</th><td>second</td></tr></table>]]></description>'
+                            '<description><![CDATA[<table border="1"<tr><th>name</th><td>second</td></tr><tr><th>snippet</th><td>The second one</td></tr><tr><th>lat</th><td>46.0</td></tr><tr><th>lon</th><td>-89.0</td></tr></table>]]></description>'
                             '<Point>'
                                 '<coordinates>-89.0,46.0</coordinates>'
                             '</Point>'
@@ -226,7 +228,7 @@ class KmlUtilTestCase(unittest.TestCase):
                         '<Placemark>'
                             '<name>third</name>'
                             '<Snippet maxLines="2">The third one (with quotes)</Snippet>'
-                            '<description><![CDATA[<table border="1"<tr><th>snippet</th><td>The third one (with quotes)</td></tr><tr><th>lat</th><td>45.0</td></tr><tr><th>lon</th><td>-88.0</td></tr><tr><th>name</th><td>third</td></tr></table>]]></description>'
+                            '<description><![CDATA[<table border="1"<tr><th>name</th><td>third</td></tr><tr><th>snippet</th><td>The third one (with quotes)</td></tr><tr><th>lat</th><td>45.0</td></tr><tr><th>lon</th><td>-88.0</td></tr></table>]]></description>'
                             '<Point>'
                                 '<coordinates>-88.0,45.0</coordinates>'
                             '</Point>'
@@ -235,6 +237,8 @@ class KmlUtilTestCase(unittest.TestCase):
                 '</Document>'
             '</kml>'
         )
+        self.assertTrue(compare_xml(target, kmlobj))
+
 
     def test_convert_csv_to_kml_missing_coordinate_fields(self):
         """Tests the convert_csv_to_kml function"""

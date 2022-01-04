@@ -6,6 +6,7 @@ from pykml.parser import parse
 from pykml.factory import KML_ElementMaker as KML
 from pykml.factory import ATOM_ElementMaker as ATOM
 from pykml.factory import GX_ElementMaker as GX
+from . import compare_xml
 
 
 def compare_etree(tree1, tree2):
@@ -45,13 +46,13 @@ class KmlFactoryTestCase(unittest.TestCase):
         doc = KML.kml()
         schema = Schema("ogckml22.xsd")
         self.assertTrue(schema.validate(doc))
-        self.assertEqual(
-            etree.tostring(doc).decode(),
+
+        target = etree.fromstring(
             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
-                 'xmlns="http://www.opengis.net/kml/2.2"/>'
-        )
+                 'xmlns="http://www.opengis.net/kml/2.2"/>')
+        self.assertTrue(compare_xml(target, doc))
 
     def test_basic_kml_document_2(self):
         """Tests the creation of a basic OGC KML document."""
@@ -71,9 +72,8 @@ class KmlFactoryTestCase(unittest.TestCase):
         # validate against a remote schema
         self.assertTrue(Schema("http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd").validate(doc))
 
-        self.assertEqual(
-            etree.tostring(doc).decode(),
-            '<kml '
+        target = etree.fromstring(
+             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
@@ -86,8 +86,8 @@ class KmlFactoryTestCase(unittest.TestCase):
                   '</Point>'
                 '</Placemark>'
               '</Document>'
-            '</kml>'
-        )
+            '</kml>')
+        self.assertTrue(compare_xml(target, doc))
 
     def test_basic_kml_document(self):
         """Tests the creation of a basic KML with Google Extensions ."""
@@ -117,9 +117,9 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEqual(
-            etree.tostring(doc).decode(),
-            '<kml '
+
+        target = etree.fromstring(
+             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
@@ -146,8 +146,8 @@ class KmlFactoryTestCase(unittest.TestCase):
                   '</gx:FlyTo>'
                 '</gx:Playlist>'
               '</gx:Tour>'
-            '</kml>'
-        )
+            '</kml>')
+        self.assertTrue(compare_xml(target, doc))
 
     def test_kml_document_with_atom_element(self):
         """Tests the creation of a KML document with an ATOM element."""
@@ -166,9 +166,9 @@ class KmlFactoryTestCase(unittest.TestCase):
             )
         )
         self.assertTrue(Schema("kml22gx.xsd").validate(doc))
-        self.assertEqual(
-            etree.tostring(doc).decode(),
-            '<kml '
+
+        target = etree.fromstring(
+             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
@@ -184,8 +184,8 @@ class KmlFactoryTestCase(unittest.TestCase):
                   '</Point>'
                 '</Placemark>'
               '</Document>'
-            '</kml>'
-        )
+            '</kml>')
+        self.assertTrue(compare_xml(target, doc))
 
     def test_kml_document_with_cdata_description(self):
         """Tests the creation of a KML document with a CDATA element."""
@@ -195,15 +195,16 @@ class KmlFactoryTestCase(unittest.TestCase):
         doc = KML.description(
                 '<h1>CDATA Tags are useful!</h1>'
             )
-        self.assertEqual(
-            etree.tostring(doc).decode(),
-              '<description '
+
+        target = etree.fromstring(
+             '<description '
                     'xmlns:atom="http://www.w3.org/2005/Atom" '
                     'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                     'xmlns="http://www.opengis.net/kml/2.2">'
                   '&lt;h1&gt;CDATA Tags are useful!&lt;/h1&gt;'
-              '</description>'
-        )
+              '</description>')
+        self.assertTrue(compare_xml(target, doc))
+
 
     def test_kml_document_with_cdata_description_2(self):
         """Tests the creation of a KML document with a CDATA element."""
@@ -228,9 +229,9 @@ class KmlFactoryTestCase(unittest.TestCase):
             ),
           ),
         )
-        self.assertEqual(
-            etree.tostring(doc).decode(),
-            '<kml '
+
+        target = etree.fromstring(
+             '<kml '
                  'xmlns:atom="http://www.w3.org/2005/Atom" '
                  'xmlns:gx="http://www.google.com/kml/ext/2.2" '
                  'xmlns="http://www.opengis.net/kml/2.2">'
@@ -248,8 +249,8 @@ class KmlFactoryTestCase(unittest.TestCase):
                   '</Point>'
                 '</Placemark>'
               '</Document>'
-            '</kml>'
-        )
+            '</kml>')
+        self.assertTrue(compare_xml(target, doc))
 
 
 class GeneratePythonScriptTestCase(unittest.TestCase):
