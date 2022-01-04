@@ -916,5 +916,4 @@ Simple Tables:<br>
 )
 
 from lxml import etree
-print etree.tostring(doc,pretty_print=True)
-
+print(etree.tostring(doc,pretty_print=True))
