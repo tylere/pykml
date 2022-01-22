@@ -1,8 +1,3 @@
----
-layout: default
-title: Home
----
-
 ## Welcome to pyKML
 
 *pyKML* is a Python package for creating, parsing, manipulating, and validating 
