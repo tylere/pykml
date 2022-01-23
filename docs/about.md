@@ -5,3 +5,5 @@ title: About
 # About page
 
 This page is just a test...
+
+{% include navigation.html %}
