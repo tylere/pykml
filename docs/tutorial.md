@@ -63,7 +63,7 @@ pyKML creates Python objects, which  can be passed around and
 later aggregated.  The following creates a second placemark object, and then 
 groups the two placemarks together in a folder.
 
-{% highlight python %} 
+{% highlight python %}
 # create another placemark
 pm2 = KML.Placemark(
       KML.name("A second placemark!"),
@@ -82,7 +82,7 @@ Objects representing KML elements can also be appended into objects that have
 already been created.
 For example, the following appends yet another placemark to the folder.
 
-{% highlight python %} 
+{% highlight python %}
 # create yet another placemark
 pm3 = KML.Placemark(
       KML.name("A third placemark!")
@@ -97,7 +97,7 @@ print etree.tostring(fld, pretty_print=True)
 Similarly, you can remove elements from an existing object.  
 The following removes the second of three placemarks from the folder:
 
-{% highlight python %} 
+{% highlight python %}
     # remove a particular placemark
     fld.remove(pm2)
     
@@ -106,7 +106,7 @@ The following removes the second of three placemarks from the folder:
   
 Once you have a KML document, you can access elements using object attributes:
 
-{% highlight python %} 
+{% highlight python %}
     print(fld.Placemark.name.text)
 {% endhighlight %}
   
