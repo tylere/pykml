@@ -13,9 +13,10 @@ Refer to the `lxml` website for
 
 To verify that the lxml library has been installed correctly, 
 open up a Python shell and type:
-```
+
+{% highlight python %}
 import lxml
-```
+{% endhighlight %}
 
 If you don't get back an error message, lxml has been installed and you are 
 ready to proceed.
@@ -26,16 +27,16 @@ ready to proceed.
 pyKML itself can be installed from the Python Package Index, 
 using [pip](http://pypi.python.org/pypi/pip):
 
-```
+{% highlight shell %}
 pip install pykml
-```
+{% endhighlight %}
 
 To verify that the pyKML library has been installed correctly, 
 open up a Python shell and type:
 
-```
+{% highlight python %}
 import pykml
-```
+{% endhighlight %}
 
 Once again, if you don't get back an error, pyKML has been installed correctly. 
 To learn how to start using pyKML, head on over to the [tutorial](tutorial.md).
